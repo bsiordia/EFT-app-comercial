@@ -1,14 +1,15 @@
 // @dart=2.9
 
-import 'package:eft_app_comercial/Libraries/decoration_colors.dart';
+
 import 'package:eft_app_comercial/Libraries/media.dart';
-import 'package:eft_app_comercial/Libraries/proportional_sizes.dart';
 import 'package:eft_app_comercial/Libraries/sql.dart';
 import 'package:eft_app_comercial/Pages/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import '../../Utils.dart';
 
 final _keyvalidate = GlobalKey<FormState>();
 
@@ -20,12 +21,22 @@ class _LoginForm extends State<LoginForm> {
   final user = TextEditingController();
   final password = TextEditingController();
 
+   bool _isObscure;
+
   @override
   void dispose() {
     user.dispose();
     password.dispose();
     super.dispose();
   }
+
+  @override
+  void initState()
+  {
+    _isObscure = true;
+  }
+
+
 
   void fetchPost({String user, String password}) async {
     print("$ip/client?username=$user&password=$password");
@@ -61,111 +72,111 @@ class _LoginForm extends State<LoginForm> {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment.center,
-      width: getHorizontalPercent(context, 100),
-      height: getVerticalPercent(context, 43),
-      child: Form(
-        key: _keyvalidate,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            Container(
-              width: getHorizontalPercent(context, 80),
-              height: getVerticalPercent(context, 10),
-              alignment: Alignment.topCenter,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(color: Colors.grey[200], width: 4),
-              ),
-              child: TextFormField(
-                controller: user,
-                keyboardType: TextInputType.numberWithOptions(decimal: false),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                autofocus: true,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontSize: getVerticalPercent(context, 3.0),
-                  color: Colors.blue,
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
-                  hintText: "Usuario",
-                  prefixIcon: SizedBox(
-                    width: getHorizontalPercent(context, 7),
-                    height: getVerticalPercent(context, 7),
-                    child: Icon(
-                      Icons.email,
-                      size: getHorizontalPercent(context, 7),
-                      color: blueLight, //#31BEE8
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(height: getVerticalPercent(context, 3.5)),
-            Container(
-              alignment: Alignment.topCenter,
-              width: getHorizontalPercent(context, 80),
-              height: getVerticalPercent(context, 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(8),
-                border: Border.all(
-                  color: Colors.grey[200],
-                  width: 4,
-                ),
-              ),
-              child: TextFormField(
-                controller: password,
-                keyboardType: TextInputType.numberWithOptions(decimal: false),
-                inputFormatters: <TextInputFormatter>[
-                  FilteringTextInputFormatter.digitsOnly,
-                ],
-                autofocus: true,
-                textAlign: TextAlign.center,
-                obscureText: true,
-                style: TextStyle(
-                  fontSize: getVerticalPercent(context, 3.0),
-                  color: Colors.blue,
-                ),
-                decoration: InputDecoration(
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 14.0),
-                  hintText: "Contraseña",
-                  prefixIcon: SizedBox(
-                    width: getHorizontalPercent(context, 7),
-                    height: getVerticalPercent(context, 7),
-                    child: Icon(
-                      Icons.vpn_key,
-                      size: getHorizontalPercent(context, 6),
-                      color: blueLight,
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: getVerticalPercent(context, 8),
-            ),
-            MaterialButton(
+      width: getScreenWith(context)*90,
+      height: getScreenHeight(context)*.90,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Text(
+            "Usuario",style: TextStyle(color: Colors.cyan, fontSize: 18,fontWeight: FontWeight.w600),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: TextField(
+              controller: user,
               autofocus: true,
-              color: blueLight,
-              height: getVerticalPercent(context, 9),
-              minWidth: getHorizontalPercent(context, 70),
-              shape: StadiumBorder(),
-              child: Text(
-                'Entrar',
-                style: TextStyle(
-                  color: Colors.white,
-                  fontSize: getVerticalPercent(context, 3.0),
+              textAlign: TextAlign.start,
+              decoration: InputDecoration(
+                suffixIcon: const Icon(
+                  Icons.verified_user_rounded,
+                ),
+                hintStyle: const TextStyle(
+                  fontSize: 16,
+                  color: Colors.grey,
+                ),
+                hintText: 'Usuario',
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
               ),
-              onPressed: loginMethod,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(
+            height: 25,
+          ),
+          Text(
+            "Contraseña",style: TextStyle(color: Colors.cyan, fontSize: 18, fontWeight: FontWeight.w600),
+          ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 15),
+            child: TextField(
+              controller: password,
+              autofocus: true,
+              textAlign: TextAlign.start,
+              obscureText: _isObscure,
+              decoration: InputDecoration(
+                  hintStyle: const TextStyle(
+                    fontSize: 16,
+                    color: Colors.grey,
+                  ),
+                  hintText: 'Contraseña',
+                  filled: true,
+                  fillColor: Colors.white,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(5),
+                  ),
+                  suffixIconColor:
+                  _isObscure ? Colors.black : Colors.grey[600],
+                  suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          _isObscure = !_isObscure;
+                        });
+                      },
+                      icon: Icon(
+                          _isObscure
+                              ? Icons.visibility
+                              : Icons.visibility_off,
+                          color: _isObscure
+                              ? Colors.blue
+                              : Colors.grey[600]))),
+            ),
+          ),
+          SizedBox(
+            height: 25,
+          ),
+          Container(
+            height: 60,
+            width: getScreenWith(context)*.70,
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.centerLeft,
+                end: Alignment.centerRight,
+                colors: <Color>[
+                  Colors.cyan,
+                  Colors.cyanAccent,
+                ],
+              ),
+              borderRadius: BorderRadius.all(
+                Radius.circular(10),
+              ),
+            ),
+            child: TextButton(
+              onPressed: loginMethod,
+              child: const Text(
+                "Iniciar sesion",
+                style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white),
+                overflow: TextOverflow.ellipsis,
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

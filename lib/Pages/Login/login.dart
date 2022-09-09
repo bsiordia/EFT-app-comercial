@@ -9,19 +9,21 @@ import 'package:eft_app_comercial/Widgets/Login/loginform.dart';
 import 'package:eft_app_comercial/Widgets/Login/logo.dart';
 import 'package:flutter/material.dart';
 
+import '../../Utils.dart';
+
 class Login extends StatelessWidget {
-  static int user;
-  static int station;
-  static String name;
-  static String nameStation;
+
+  static int user, station;
+  static String name, nameStation;
+
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: whiteLight,
       body: Container(
-        height: double.infinity,
-        width: double.infinity,
+        color: AppColors.Fondo,
+        width: getScreenWith(context),
+        height: getScreenHeight(context),
         child: FutureBuilder(
             future: getLogedUser(),
             builder: (BuildContext context, AsyncSnapshot snapshot) {
@@ -29,21 +31,14 @@ class Login extends StatelessWidget {
                 return Center(child: CircularProgressIndicator());
               if (user == null)
                 return ListView(
-                  scrollDirection: Axis.vertical,
-                  padding: EdgeInsets.only(top: 0),
-                  physics: BouncingScrollPhysics(),
                   children: [
                     Stack(
                       clipBehavior: Clip.none,
-                      alignment: Alignment.bottomCenter,
                       children: [
                         Header(),
                         Logo(),
                       ],
                       // ignore: deprecated_member_use
-                    ),
-                    SizedBox(
-                      height: getVerticalPercent(context, 15),
                     ),
                     LoginForm(),
                   ],

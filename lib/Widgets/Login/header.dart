@@ -11,7 +11,7 @@ class Header extends StatelessWidget {
       height: getVerticalPercent(context, 23.5),
       child: ClipPath(
         clipper: Myclipper(),
-        child: Image.asset("assets/imagen3.jpg", fit: BoxFit.fill),
+        child: Image.asset("assets/Chevron.jpg", fit: BoxFit.cover),
       ),
     );
   }
