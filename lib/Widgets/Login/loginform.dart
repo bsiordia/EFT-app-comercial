@@ -11,8 +11,6 @@ import 'dart:convert';
 
 import '../../Utils.dart';
 
-final _keyvalidate = GlobalKey<FormState>();
-
 class LoginForm extends StatefulWidget {
   _LoginForm createState() => _LoginForm();
 }
@@ -22,6 +20,7 @@ class _LoginForm extends State<LoginForm> {
   final password = TextEditingController();
 
    bool _isObscure;
+   FocusNode myFocusNode;
 
   @override
   void dispose() {
@@ -33,6 +32,7 @@ class _LoginForm extends State<LoginForm> {
   @override
   void initState()
   {
+    myFocusNode = FocusNode();
     _isObscure = true;
   }
 
@@ -102,6 +102,9 @@ class _LoginForm extends State<LoginForm> {
                   borderRadius: BorderRadius.circular(5),
                 ),
               ),
+              onSubmitted: (values){
+              myFocusNode.requestFocus();
+              },
             ),
           ),
           const SizedBox(
@@ -114,7 +117,7 @@ class _LoginForm extends State<LoginForm> {
             padding: EdgeInsets.symmetric(horizontal: 15),
             child: TextField(
               controller: password,
-              autofocus: true,
+              focusNode: myFocusNode,
               textAlign: TextAlign.start,
               obscureText: _isObscure,
               decoration: InputDecoration(
